@@ -1,0 +1,14 @@
+
+.notFoundBox{
+    margin-top: 200px;
+    margin-left: 300px;
+}
+
+.notFoundText{
+    font-size: xx-large;
+    color: rgb(188, 133, 116);
+}
+
+.notFoundLoader{
+    margin-left: 200px;
+}

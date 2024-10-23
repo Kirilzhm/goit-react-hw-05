@@ -1,0 +1,21 @@
+
+.form{
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.formInput{
+    width: 250px;
+    height: 30px;
+    padding-left: 10px;
+    margin-right: 20px;
+}
+
+.formBtn{
+    background-color: rgb(18, 18, 18);
+}
+
+.noResultsText{
+    color: rgb(177, 108, 108);
+    font-size: large;
+}
