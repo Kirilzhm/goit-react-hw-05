@@ -26,6 +26,7 @@ const MovieDetailsPage = () => {
 
     if (!movie) {
         return (
+            <div className={styles.loader}>
             <MagnifyingGlass
                 visible={true}
                 height="80"
@@ -36,6 +37,7 @@ const MovieDetailsPage = () => {
                 glassColor="#c0efff"
                 color="#e15b64"
             />
+            </div>
         );
     }
 

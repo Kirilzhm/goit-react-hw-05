@@ -1,6 +1,7 @@
 import apiMovies from "../api-movies";
 import { useEffect, useState } from "react";
 import MovieList from "../components/MovieList";
+import styles from "./HomePage.module.css"
 
 const HomePage = () => {
     const [movies, setMovies] = useState([]);
@@ -19,7 +20,7 @@ const HomePage = () => {
 
     return(
         <div>
-            <h1>Trending today</h1>
+            <h1 className={styles.searchText}>Trending today</h1>
             <MovieList movies={movies}/>
         </div>
     );

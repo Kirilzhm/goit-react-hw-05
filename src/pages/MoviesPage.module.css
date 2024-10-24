@@ -18,4 +18,11 @@
 .noResultsText{
     color: rgb(177, 108, 108);
     font-size: large;
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.searchText{
+    margin-top: 80px;
+    margin-left: 50px;
 }

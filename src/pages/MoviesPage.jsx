@@ -1,51 +1,72 @@
 import styles from "./MoviesPage.module.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import apiMovies from "../api-movies";
 import MovieList from "../components/MovieList";
+import { useSearchParams } from "react-router-dom";
+import { MagnifyingGlass } from "react-loader-spinner";
 
 const MoviesPage = () => {
-
-    const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
-
-    const handleInputChange = (event) => {
-        setQuery(event.target.value);
+    const [loading, setLoading] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const query = searchParams.get('query') || '';
+  
+    useEffect(() => {
+      if (query) {
+        const fetchMovies = async () => {
+            setLoading(true);
+          try {
+            const searchResults = await apiMovies.searchMovies(query);
+            setMovies(searchResults);
+          } catch (error) {
+            console.error('Error fetching search results:', error);
+          }
+          finally {
+            setLoading(false);
+          }
+        };
+  
+        fetchMovies();
+      }
+    }, [query]);
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const searchQuery = form.elements.query.value;
+  
+      if (searchQuery.trim()) {
+        setSearchParams({ query: searchQuery });
+      } else {
+        setSearchParams({});
+      }
     };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        if (query.trim() === '') {
-            return;
-        }
-        try {
-            const serchResults = await apiMovies.searchMovies(query);
-            setMovies(serchResults);
-        } catch (error) {
-            console.error('Error searching for movies:', error);
-            
-        }
-    }
-
+  
     return (
-        <div>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <input 
-                type="text" 
-                className={styles.formInput}
-                value={query}
-                onChange={handleInputChange}/>
-                <button 
-                type="submit"
-                className={styles.formBtn}>Search</button>
-            </form>
-            <ul>
-                {movies.length > 0 ? (<MovieList movies={movies}/>) : (
-                    <p className={styles.noResultsText}>No results found</p>
-                )}
-            </ul>
-        </div>
-    )
-};
+      <div>
+        <h1 className={styles.searchText}>Search Movies</h1>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input type="text" name="query" defaultValue={query} className={styles.formInput}/>
+          <button type="submit" className={styles.formBtn}>Search</button>
+        </form>
+  
+        {loading && <MagnifyingGlass
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="magnifying-glass-loading"
+                wrapperStyle={{}}
+                wrapperClass="magnifying-glass-wrapper"
+                glassColor="#c0efff"
+                color="#e15b64"
+            />}
+        {movies.length > 0 && <MovieList movies={movies} />}
+
+        {!loading && query && movies.length === 0 && (
+            <p className={styles.noResultsText}>No results</p>
+        )}
+      </div>
+    );
+  };
 
 export default MoviesPage;
